@@ -7,11 +7,12 @@ gem 'figaro',       '~> 0.7.0'
 gem 'faraday',      '~> 0.8'
 
 # Assets
-gem 'sass-rails',   '~> 4.0.0'
-gem 'coffee-rails', '~> 4.0.0'
-gem 'haml-rails',   '~> 0.4'
-gem 'uglifier',     '>= 1.3.0'
-gem 'therubyracer', platforms: :ruby
+gem 'sass-rails',     '~> 4.0.0'
+gem 'coffee-rails',   '~> 4.0.0'
+gem 'haml-rails',     '~> 0.4'
+gem 'uglifier',       '>= 1.3.0'
+gem 'therubyracer',   platforms: :ruby
+gem 'bootstrap-sass', '~> 3.0.2.0'
 
 gem 'jquery-rails'
 gem 'turbolinks'
