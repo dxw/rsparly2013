@@ -8,7 +8,10 @@ gem 'zeus',           '~> 0.13.3'
 gem 'twfy',           '~> 1.1'
 gem 'pry-rails'
 gem 'nokogiri',       '~> 1.6'
+gem "redcarpet",      '~> 3.0.0'
+gem 'reverse_markdown'
 gem 'ranked-model'
+
 
 # Assets
 gem 'sass-rails',     '~> 4.0.0'
