@@ -1,0 +1,19 @@
+@mixin fontsize($size) {
+  font-size: $size * 1px;
+  font-size: $size * 0.1rem;
+}
+
+@mixin boxsizing($value) { 
+  -moz-box-sizing: $value;
+  -webkit-box-sizing: $value;
+  -o-box-sizing: $value;
+  -khtml-box-sizing: $value;
+  box-sizing: $value;
+}
+
+@mixin transition($value) {
+  -moz-transition: $value;
+  -o-transition: $value;
+  -webkit-transition: $value;
+  transition: $value;
+}
