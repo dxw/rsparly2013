@@ -21,3 +21,6 @@ gem 'turbolinks'
 gem 'puma'
 
 gem "redcarpet", "~> 3.0.0"
+gem 'nokogiri'
+gem 'reverse_markdown'
+gem 'open-uri'
