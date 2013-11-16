@@ -20,9 +20,36 @@ module LegislationApi
 		uri = res.header["location"].gsub('/id','')
 
 		doc = Nokogiri::HTML(open('http://legislation.data.gov.uk'+uri+'/data.htm'))
-	    doc.search('.LegExtentRestriction','.LegPrelim','.LegBlockNotYetInForceHeading','h1','h2','h3').remove
-	    doc = ReverseMarkdown.parse doc 
-	    doc = doc.split(%r{^#### })
+
+	    clauses = []
+	    clauses_doc = doc.css('.LegBlockNotYetInForce')
+	    clauses_doc.each do |clause_doc|
+	    	clause = { contents: [] }
+	    	clause_doc.children.css('.LegP1ContainerFirst','.LegP1Container, .LegP2Container, .LegP3Container').each do |p|
+
+	    		content = {}
+
+	    		classes = p.attr(:class).split(" ")
+	    		puts classes.inspect
+	    		if classes.include?("LegP1Container") or classes.include?("LegP1ContainerFirst")
+	    			content[:type] = :title
+	    			content[:text] = p.css('.LegP1GroupTitleFirst').text
+	    			content[:no] = p.css('.LegP1No').text
+	    		elsif classes.include?("LegP2Container") or classes.include?("LegP3Container")
+	    			content[:type] = :paragraph
+	    			content[:text] = p.css('.LegRHS').text
+	    			content[:no] = p.children.first.text
+	    		end
+
+	    		clause[:contents] << content
+
+	    	end
+	    	clauses << clause
+	    end
+
+	    return clauses
+	    # doc = ReverseMarkdown.parse doc 
+	    # doc = doc.split(%r{^#### })
 	    
 	    #simple_format(doc)
 
