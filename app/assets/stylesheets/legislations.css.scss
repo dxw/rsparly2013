@@ -1,5 +1,5 @@
 .legislation {
-  padding: $padding;
+  padding: $padding $padding $spacer $padding;
   background: $paleblue;
   position: relative;
   margin-top: $spacer;
@@ -9,8 +9,12 @@
     bottom: 15px;
     right: 15px;
     background: asset-url("arrow-right.svg") no-repeat bottom right;
-    text-indent: -2000px;
+    padding-right: 35px;
+    font-weight: bold;
+    color: #000;
+    @include fontsize(18);
     opacity: 0.5;
+    text-decoration: none;
 
     &:hover {
       background: asset-url("arrow-down.svg") no-repeat bottom right;
@@ -21,9 +25,12 @@
 }
 
 .amendments {
-  margin-top: $padding;
-  
+  padding-top: 10px;
+  border-left: 5px $paleblue solid;
+  display: none;
+
   .amendment {
-    padding-left: $spacer;
+    padding-left: 80px;
+    margin: 30px 0 ;
   }
 }
