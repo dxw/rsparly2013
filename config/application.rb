@@ -18,7 +18,6 @@ module Rsparly2013
       g.test_framework nil
       g.stylesheet_engine :sass
       g.template_engine :haml
-      g.template_engine :coffee
     end
 
   end

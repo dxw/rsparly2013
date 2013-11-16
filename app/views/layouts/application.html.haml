@@ -2,8 +2,15 @@
 %html
   %head
     %title= "Rsparly2013"
+    %meta{content: "width=device-width, initial-scale=1.0", name: "viewport"}
     = stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true
     = javascript_include_tag "application", "data-turbolinks-track" => true
     = csrf_meta_tags
 
-  %body= yield
+  %body
+    .container
+      %header
+        %h1 A project not called Bill Shatner
+        %p This is an awesome description about an awesome project. It's not called Bill Shatner, because that was Alex's stupid idea but it really is stupid.
+    .container
+      = yield

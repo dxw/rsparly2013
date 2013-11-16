@@ -27,6 +27,8 @@ GEM
       tzinfo (~> 0.3.37)
     arel (4.0.1)
     atomic (1.1.14)
+    bootstrap-sass (3.0.2.1)
+      sass (~> 3.2)
     builder (3.1.4)
     coderay (1.0.9)
     coffee-rails (4.0.1)
@@ -41,6 +43,13 @@ GEM
     figaro (0.7.0)
       bundler (~> 1.0)
       rails (>= 3, < 5)
+    haml (4.0.4)
+      tilt
+    haml-rails (0.4)
+      actionpack (>= 3.1, < 4.1)
+      activesupport (>= 3.1, < 4.1)
+      haml (>= 3.1, < 4.1)
+      railties (>= 3.1, < 4.1)
     hike (1.2.3)
     i18n (0.6.5)
     jquery-rails (3.0.4)
@@ -63,6 +72,10 @@ GEM
       slop (~> 3.4)
     pry-rails (0.3.2)
       pry (>= 0.9.10)
+    puma (2.6.0)
+      rack (>= 1.1, < 2.0)
+    quiet_assets (1.0.2)
+      railties (>= 3.1, < 5.0)
     rack (1.5.2)
     rack-test (0.6.2)
       rack (>= 1.0)
@@ -116,15 +129,21 @@ GEM
     uglifier (2.3.1)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    zeus (0.13.3)
+      method_source (>= 0.6.7)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  bootstrap-sass (~> 3.0.2.0)
   coffee-rails (~> 4.0.0)
   figaro (~> 0.7.0)
+  haml-rails (~> 0.4)
   jquery-rails
   pry-rails
+  puma
+  quiet_assets (~> 1.0.2)
   rails (= 4.0.0)
   sass-rails (~> 4.0.0)
   sqlite3 (~> 1.3.8)
@@ -132,3 +151,4 @@ DEPENDENCIES
   turbolinks
   twfy (~> 1.1)
   uglifier (>= 1.3.0)
+  zeus (~> 0.13.3)
