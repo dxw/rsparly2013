@@ -67,6 +67,8 @@ GEM
     multi_json (1.8.2)
     multipart-post (1.2.0)
     polyglot (0.3.3)
+    puma (2.6.0)
+      rack (>= 1.1, < 2.0)
     quiet_assets (1.0.2)
       railties (>= 3.1, < 5.0)
     rack (1.5.2)
@@ -131,6 +133,7 @@ DEPENDENCIES
   figaro (~> 0.7.0)
   haml-rails (~> 0.4)
   jquery-rails
+  puma
   quiet_assets (~> 1.0.2)
   rails (= 4.0.0)
   sass-rails (~> 4.0.0)

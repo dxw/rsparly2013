@@ -18,3 +18,4 @@ gem "quiet_assets",   '~> 1.0.2'
 
 gem 'jquery-rails'
 gem 'turbolinks'
+gem 'puma'
