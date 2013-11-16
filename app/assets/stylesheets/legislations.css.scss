@@ -16,7 +16,7 @@
     opacity: 0.5;
     text-decoration: none;
 
-    &:hover {
+    &:hover, &.selected {
       background: asset-url("arrow-down.svg") no-repeat bottom right;
       opacity: 1;
     }

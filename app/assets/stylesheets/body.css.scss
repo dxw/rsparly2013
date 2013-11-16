@@ -44,6 +44,7 @@ header {
 
   p {
     @include fontsize(25);
+    margin-bottom: 25px;
   }
 
   .btn {
