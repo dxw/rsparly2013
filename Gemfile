@@ -7,6 +7,7 @@ gem 'figaro',         '~> 0.7.0'
 gem 'zeus',           '~> 0.13.3'
 gem 'twfy',           '~> 1.1'
 gem 'pry-rails'
+gem 'nokogiri',       '~> 1.6'
 gem 'ranked-model'
 
 # Assets

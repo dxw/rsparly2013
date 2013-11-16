@@ -62,8 +62,11 @@ GEM
       treetop (~> 1.4.8)
     method_source (0.8.2)
     mime-types (1.25)
+    mini_portile (0.5.2)
     minitest (4.7.5)
     multi_json (1.8.2)
+    nokogiri (1.6.0)
+      mini_portile (~> 0.5.0)
     paginator (1.2.0)
     polyglot (0.3.3)
     pry (0.9.12.2)
@@ -143,6 +146,7 @@ DEPENDENCIES
   figaro (~> 0.7.0)
   haml-rails (~> 0.4)
   jquery-rails
+  nokogiri (~> 1.6)
   pry-rails
   puma
   quiet_assets (~> 1.0.2)
