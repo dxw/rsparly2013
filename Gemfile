@@ -13,6 +13,7 @@ gem 'haml-rails',     '~> 0.4'
 gem 'uglifier',       '>= 1.3.0'
 gem 'therubyracer',   platforms: :ruby
 gem 'bootstrap-sass', '~> 3.0.2.0'
+gem "quiet_assets",   '~> 1.0.2'
 
 gem 'jquery-rails'
 gem 'turbolinks'
