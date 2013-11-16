@@ -1,12 +1,8 @@
-// Place all the styles related to the Legislations controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
-
 .legislation {
-  @include boxsizing(border-box);
   padding: $padding;
   background: $paleblue;
   position: relative;
+  margin-top: $spacer;
 
   .expand {
     position: absolute;
@@ -20,5 +16,14 @@
       background: asset-url("arrow-down.svg") no-repeat bottom right;
       opacity: 1;
     }
+  }
+
+}
+
+.amendments {
+  margin-top: $padding;
+  
+  .amendment {
+    padding-left: $spacer;
   }
 }
