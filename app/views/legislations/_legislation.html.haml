@@ -3,4 +3,5 @@
   .expand
     Expand link
 
-  %p=@mdoc
+  - @mdoc.each do |clause|
+    %p= clause

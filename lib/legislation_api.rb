@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'net/http'
 require 'nokogiri'
 require 'open-uri'
@@ -19,8 +20,10 @@ module LegislationApi
 		uri = res.header["location"].gsub('/id','')
 
 		doc = Nokogiri::HTML(open('http://legislation.data.gov.uk'+uri+'/data.htm'))
-	    doc.search('.LegExtentRestriction').remove
+	    doc.search('.LegExtentRestriction','.LegPrelim','.LegBlockNotYetInForceHeading','h1','h2','h3').remove
 	    doc = ReverseMarkdown.parse doc 
+	    doc = doc.split(%r{^#### })
+	    
 	    #simple_format(doc)
 
 	    #markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, :autolink => true, :space_after_headers => true, :tables => true)

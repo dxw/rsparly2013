@@ -2,15 +2,15 @@
 require 'legislation_api'
 include LegislationApi
 
-#This is just for the simple format...
-require 'action_view/helpers/text_helper'
+#This is just for the simple_format...
+#require 'action_view/helpers/text_helper'
 
 class LegislationsController < ApplicationController
-  #This is just for the simple format...
-  include ActionView::Helpers::TextHelper
+  #This is just for the simple_format...
+  #include ActionView::Helpers::TextHelper
 
   def index
-  	@mdoc = simple_format(getLegislationParsedForTitle)
+  	@mdoc = getLegislationParsedForTitle
   end
 
   def show
