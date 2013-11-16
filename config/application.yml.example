@@ -1,8 +1,10 @@
 development: &default
   secret_token:
+  theyworkforyou_api_key:
 
 test:
   <<: *default
 
 production:
   <<: *default
+
