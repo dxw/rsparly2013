@@ -15,6 +15,14 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
 }
 
+a {
+  color: $blue;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
 p {
   margin: 0 0 20px 0;
 }
@@ -37,4 +45,15 @@ header {
   p {
     @include fontsize(25);
   }
+
+  .btn {
+    margin: 10px 0;
+  }
+}
+
+.btn {
+  @include fontsize(20);
+  background: $blue;
+  border: none;
+  padding: 10px 20px;
 }

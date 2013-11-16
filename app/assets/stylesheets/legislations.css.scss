@@ -21,7 +21,6 @@
       opacity: 1;
     }
   }
-
 }
 
 .amendments {
@@ -31,6 +30,43 @@
 
   .amendment {
     padding-left: 80px;
-    margin: 30px 0 ;
+    margin: 30px 0;
+    position: relative;
+
+    .process {
+    border: solid 4px $blue;
+    border-radius: 30px;
+    height: 43px;
+    width: 43px;
+    display: inline-block;
+    color: $blue;
+    font-weight: bold;
+    @include fontsize(25);
+    text-align: center;
+    position: absolute;
+    top: 3px;
+    left: 22px;
+
+    &.commons {
+      color: $commons;
+      border-color: $commons;
+      opacity: 0.5;
+    }
+
+    &.lords {
+      color: $lords;
+      border-color: $lords;
+      opacity: 0.5;
+    }
+  }
+  }
+
+  .meta {
+    color: $gray-light;
+
+    time {
+      display: inline-block;
+      padding-left: 10px;
+    }
   }
 }
