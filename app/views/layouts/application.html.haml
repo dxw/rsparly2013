@@ -12,6 +12,6 @@
       %header
         %h1 MetaBill
         %h2 Explore legislation & see the arguments that shaped clauses, news stories and laws.
-        %p Context is everything. When you read legislation without the information about how it came to be, what arguments were made and what got left out can leave you without enough information to make sense of the decisions made about you. MetaBill gives you the information you need to see how the shape and substance of a bill changed through Parliament, using intuitive visuals, clear linking of data and a consistent experience across all stages of legislation.
-        %button.btn.btn-primary More about MetaBill
-      = yield
+        = content_for?(:header) ? yield(:header) : yield
+
+      = content_for?(:content) ? yield(:content) : yield
