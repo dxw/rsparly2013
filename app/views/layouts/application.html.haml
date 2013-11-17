@@ -12,7 +12,7 @@
       %header.header
         %h1 MetaBill
         %h2 Explore legislation & see the arguments that shaped clauses, news stories and laws.
-        = content_for?(:header) ? yield(:header) : yield
+        = yield(:header) if content_for?(:header)
 
-    .container
-    = content_for?(:content) ? yield(:content) : yield
+
+      = content_for?(:content) ? yield(:content) : yield
