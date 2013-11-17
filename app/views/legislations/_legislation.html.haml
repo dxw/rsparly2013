@@ -1,6 +1,6 @@
-- legislation.each do |clause|
+- legislation.each do |leg|
   %section.legislation
-    %p= clause.text
+    %p= leg
     %a.expand Amendments
   %aside.amendments
     .amendment
@@ -21,16 +21,3 @@
       .meta
         %a.debate Read debate
         %time 10th January 2013
-
-/ %section.legislation.removed
-/   %h3
-/     %span Removed:
-/     Clause about Alex's Mum
-/   %a.expand Amendments
-/ %aside.amendments
-/   .amendment
-/     %span.process.commons 1
-/     %p Banh mi Carles Pitchfork vegan chambray, pour-over messenger bag church-key. Gentrify vinyl raw denim cornhole messenger bag. McSweeney's jean shorts banjo polaroid authentic keffiyeh church-key, pork belly YOLO beard raw denim Austin Schlitz. Stumptown Intelligentsia raw denim, Pitchfork tote bag leggings American Apparel pickled VHS. Organic ethical Brooklyn, meh ethnic direct trade Carles messenger bag keytar Intelligentsia cardigan Wes Anderson. Wayfarers keffiyeh chambray aesthetic, iPhone ethnic raw denim beard master cleanse mustache. Polaroid pour-over literally, Portland Godard fixie organic gluten-free wayfarers.
-/     .meta
-/       %a.debate Read debate
-/       %time 10th January 2013
