@@ -24,17 +24,21 @@
 
 - @debate.each do |debate_segment|
   .row.debate
-    %aside.col-md-4
-      %h4
-        = debate_segment.speaker["title"]
-        = debate_segment.speaker["first_name"]
-        = debate_segment.speaker["last_name"]
-        ="(#{debate_segment.speaker["desc"]})"
+    %aside.col-md-3
+      .wrapper
+        %span.img
+          - if debate_segment.speaker["image"]
+            %img{ src: URI.join("http://www.theyworkforyou.com/", debate_segment.speaker["image"]).to_s }
+        %span.title
+          %h3
+            %a{:href => "theyworkforyou.com" }
+              = debate_segment.speaker["title"]
+              = debate_segment.speaker["first_name"]
+              = debate_segment.speaker["last_name"]
+          %span.desc
+            = debate_segment.speaker["desc"]
 
-      - if debate_segment.speaker["image"]
-        %img{ src: URI.join("http://www.theyworkforyou.com/", debate_segment.speaker["image"]).to_s }
-
-    %section.col-md-8
+    %section.col-md-9
       != debate_segment.body
       %p
         %em
