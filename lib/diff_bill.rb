@@ -54,7 +54,7 @@ module DiffBill
 
 				vBills << vBill unless vBill[:title].include? 'mendments'
 
-	    	end
+			end
 		end
 
 		return vBills
@@ -68,27 +68,21 @@ module DiffBill
 			title=bill[:title][/(.*\d\d\d\d)\s.*/,1]
 			title = URI.escape(title)
 
-		    url = URI.parse('http://www.legislation.gov.uk/id?title='+title)
+			url = URI.parse('http://www.legislation.gov.uk/id?title='+title)
 
-		    req = Net::HTTP::Get.new(url)
-		    res = Net::HTTP.start(url.host, 80) {|http|
-		        http.request(req)
-		    }
+			req = Net::HTTP::Get.new(url)
+			res = Net::HTTP.start(url.host, 80) {|http|
+				http.request(req)
+			}
 
-		    uri = res.header["location"].gsub('/id','')
+			uri = res.header["location"].gsub('/id','')
 
-		    doc = Nokogiri::HTML(open('http://legislation.data.gov.uk'+uri+'/data.htm'))
+			doc = Nokogiri::HTML(open('http://legislation.data.gov.uk'+uri+'/data.htm'))
 
-		    doc.css('.LegExtentRestriction, .LegPrelim, .LegBlockNotYetInForceHeading, h1, h2, h3').remove
-		    doc = ReverseMarkdown.parse doc
-		    doc = doc.split(%r{^#### })
-		    doc.each do |clauseunedited|
-    			clause={}
-    			clause[:no] = clauseunedited[/\A(\d+)\s/,1]
-    			clause[:title] = clauseunedited[/\A\d+\s([\w\s]+)\n\n/,1]
-    			clause[:text] = clauseunedited.gsub(%r/\A[\w\s]+\n\n/,'')
-    			clauses << clause
-    		end
+			doc.css('.LegExtentRestriction, .LegPrelim, .LegBlockNotYetInForceHeading, h1, h2, h3').remove
+			doc = ReverseMarkdown.parse doc
+			doc = doc.split(%r{^#### })
+
 		else
 
 			doc = Nokogiri::HTML(open(url))
@@ -118,7 +112,9 @@ module DiffBill
 				fullBill += doc.to_s
 			end
 
-			doc =  Nokogiri::HTML(fullBill)
+			doc = Nokogiri::HTML(fullBill)
+			doc = ReverseMarkdown.parse doc 
+			doc = doc.split(%r{^\#?\#\#\# })
 
 			#doc.search('.LegP1ContainerFirst').each do |clause|
 			#end
@@ -131,20 +127,20 @@ module DiffBill
 			# # 	end
 			# # 	doc.at('h1:last').remove
 			# # end
-
-			clauses = []
-
-			doc = ReverseMarkdown.parse doc
-    		doc = doc.split(%r{^\#?\#\#\# })
-    		doc.each do |clauseunedited|
-    			clause={}
-    			clause[:no] = clauseunedited[/\A(\d+)\s/,1]
-    			clause[:title] = clauseunedited[/\A\d+\s([\w\s]+)\n\n/,1]
-    			clause[:text] = clauseunedited.gsub(%r/\A[\w\s]+\n\n/,'')
-    			clauses << clause
-    		end
-
-			return clauses
 		end
+
+		clauses = []
+
+		if doc 
+			doc.each do |clauseunedited|
+				clause={}
+				clause[:no] = clauseunedited[/\A(\d+)\s/,1]
+				clause[:title] = clauseunedited[/\A\d+\s([\w\s\-:;\."“”]+)\n\n/,1]
+				clause[:text] = clauseunedited.gsub(/\A\d+\s[\w\s\-:;\."“”]+\n\n/,'')
+				clauses << clause
+			end
+		end
+
+		return clauses
 	end
 end
