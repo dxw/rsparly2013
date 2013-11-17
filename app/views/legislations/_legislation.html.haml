@@ -1,15 +1,56 @@
-- clauses.each do |clause|
-  %section.legislation
-    %p= clause[:text]
-    %a.expand Amendments
-  %aside.amendments
-    - clause[:amendments].each do |amendment|
-      .amendment
-        %span.process.lords 1
-        %p= clause[:text]
-        .meta
-          =link_to "Read debate", debate_path(amendment[:amendment_number]), :class => "debate"
-          %time 10th January 2013
+/ - clauses.each do |clause|
+/   %section.legislation
+/     = clause[:text]
+%section.legislation
+  %h3
+    %strong="1"
+    Extension of marriage to same sex couples
+
+  %p (1)Marriage of same sex couples is lawful.
+  %p (2)The marriage of a same sex couple may only be solemnized in accordance withâ
+  %p (a)Part 3 of the Marriage Act 1949,
+  %p (b)Part 5 of the Marriage Act 1949,
+  %p (c)the Marriage (Registrar General's Licence) Act 1970, or
+  %p (d)an Order in Council made under Part 1 or 3 of Schedule 6.
+  %p (3)No Canon of the Church of England is contrary to section 3 of the Submission of the Clergy Act 1533 (which provides that no Canons shall be contrary to the Royal Prerogative or the customs, laws or statutes of this realm) by virtue of its making provision about marriage being the union of one man with one woman.
+  %p (4)Any duty of a member of the clergy to solemnize marriages (and any corresponding right of persons to have their marriages solemnized by members of the clergy) is not extended by this Act to marriages of same sex couples.
+  %p (5)A âmember of the clergyâ isâ
+  %p (a)a clerk in Holy Orders of the Church of England, or
+  %p (b)a clerk in Holy Orders of the Church in Wales.
+%section.legislation
+  %h3
+    %strong="2"
+    Marriage for which no opt-in necessary
+  %p In Part 3 of the Marriage Act 1949, for section 26 substituteâ
+  %h5 â26Marriage of a man and a woman; marriage of same sex couples for which no opt-in necessary
+  %p (1)The following marriages may be solemnized on the authority of two certificates of a superintendent registrarâ
+  %p â(a)a marriage of a man and a woman, in a building registered under section 41, according to such form and ceremony as the persons to be married see fit to adopt;
+  %p (b)a marriage of any couple in the office of a superintendent registrar;
+  %p (bb)a marriage of any couple on approved premises;
+  %p (c)a marriage of a man and a woman according to the usages of the Society of Friends (commonly called Quakers);
+  %p (d)a marriage between a man and a woman professing the Jewish religion according to the usages of the Jews;
+  %p (dd)a qualifying residential marriage;
+  %p (e)a marriage of a man and a woman according to the rites of the Church of England in any church or chapel in which banns of matrimony may be published.â
+  %p (2)In this section âqualifying residential marriageâ meansâ
+  %p (a)the marriage of a man and a woman (other than a marriage in pursuance of subsection (1)(c) or (d) above), one or each of whom is house-bound or a detained person, at the usual place of residence of the house-bound or detained person or persons, or
+  %p (b)the marriage of a same sex couple (other than a marriage according to the rites of the Church of England or other religious rites or usages), one or each of whom is house-bound or a detained person, at the usual place of residence of the house-bound or detained person or persons.â.
+%section.legislation
+  %h3
+    %strong="4"
+    Opt-in: marriage in places of worship
+  %p (1)After section 26 of the Marriage Act 1949 insertâ
+  %h5 â26AOpt-in to marriage of same sex couples: places of worship
+  %p (1)A marriage of a same sex couple in an appropriately registered building according to such form and ceremony as the persons to be married see fit to adopt may be solemnized on the authority of two certificates of a superintendent registrar.
+  %p (2)For the purposes of this section âappropriately registered buildingâ means a building which has been registered under section 43A.
+  %p (3)An application for registration of a building under section 43A may not be made unless the relevant governing authority has given written consent to marriages of same sex couples.
+  %p (4)For that purpose, in relation to a buildingâ
+  %h2
+  %p ârelevant governing authorityâ means the person or persons recognised by the members of the relevant religious organisation as competent for the purpose of giving consent for the purposes of this section;
+  %h2
+  %p ârelevant religious organisationâ means the religious organisation for whose religious purposes the building is used.
+  %p (5)Nothing in this section is to be taken to relate or have any reference to marriages solemnized according to the rites of the Church of England.
+  %p (6)This section is subject (in particular) to sections 44A to 44C (registration of shared buildings for marriage of same sex couples) and regulations made under any of those sections.â.
+  %p (2)Schedule 1 (registration of buildings etc) has effect.
 
 / .amendment
 /   %span.process.lords 1
