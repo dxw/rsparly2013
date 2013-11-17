@@ -15,7 +15,11 @@ class LegislationsController < ApplicationController
   end
 
   def show
-    @legislation = Legislation.find(params[:id])
+    # bill_url = 'http://services.parliament.uk/bills/2013-14/marriagesamesexcouplesbill/documents.html'
+    legislation_title = 'Marriage (Same Sex Couples) Act 2013'
+
+    @legislation = getLegislationParsedForTitle(legislation_title)
+    # getClausesFromBillVersion(bill_url)
   end
 
 end
