@@ -12,6 +12,7 @@ class Debates
 
   #
   # Debates.new.debate_from_url(:commons, "http://www.publications.parliament.uk/pa/cm201314/cmhansrd/cm130521/debtext/130521-0002.htm#13052156000001")
+  # Debates.new.amendments_from_url_with_indexes(:commons, "http://www.publications.parliament.uk/pa/cm201314/cmhansrd/cm130521/debtext/130521-0002.htm#13052156000001")
 
 
   def client
@@ -25,24 +26,26 @@ class Debates
 
   def amendments_from_debate_with_indexes(debate_hash)
     foo = []
-    # debate_array.map{|a| a.body}.each_with_index{|body, i| m = body.match(/<b>(\d+[A-Z]*):<\/b>+/);  foo[match[1]] = i if match }.compact
-    debate_hash.map{|a| a.body}.each_with_index{|body, i| m = body.match(/<b>(\d+[A-Z]*):<\/b>+/);  foo << [m[1], i] if m }.compact
+    # debate_hash.map{|a| a.body}.each_with_index{|body, i| m = body.match(/<b>(\d+[A-Z]*):<\/b>+/);  foo << {amendment_number: m[1], index: i} if m }.compact
+    debate_hash.map{|a| a.body}.each_with_index{|body, i| m = body.match(/<b>(\d+[A-Z]*):<\/b>([^,]+),+/);  foo << { amendment_number: m[1], referenced_part: m[2].gsub("After",'').strip, index: i } if m }.compact
 
     return foo
     # OUTPUT = e.g.
   end
 
-  def amendment_debate(amendment, debate_array, amendments_from_debate_with_indexes)
-    start_index =nil
-    end_index = nil
+  def amendments_from_url_with_indexes(type, url)
+    debate_array = debate_from_url(type, url)
+    amendments_from_debate_with_indexes(debate_array)
+  end
 
-    amendments_from_debate_with_indexes.each_with_index do |amendment_and_index, n|
-      if amendment == amendment_and_index[0]
-        @start_index = amendment_and_index[1]
+
+  def amendment_debate(amendment, debate_array, amendments_from_debate_with_indexes)
+    amendments_from_debate_with_indexes.each_with_index do |amendment_index_hash, n|
+      if amendment == amendment_index_hash[:amendment_number]
+        @start_index = amendment_index_hash[:index]
         @end_index = 10000000000 # can't be bothered to calculate the actual length
         next_element = amendments_from_debate_with_indexes[n+1]
-
-        @end_index = next_element[1] unless next_element.nil?
+        @end_index = next_element[:index] unless next_element.nil?
       end
     end
 
@@ -54,7 +57,7 @@ class Debates
   def amendment_debates_from_url(type, url)
     debate_array = debate_from_url(type, url)
     afdwi = amendments_from_debate_with_indexes(debate_array)
-    afdwi.collect {|amendment, i| amendment_debate(amendment, debate_array, afdwi)}
+    afdwi.collect {|amendment_hash| amendment_debate(amendment_hash[:amendment_number], debate_array, afdwi)}
   end
 
   def debate_from_url(type, url)
