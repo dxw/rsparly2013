@@ -13,14 +13,14 @@ module DiffBill
     end
 
     diffs =[]
-    for i in 0..(bills_clauses-2)
+    for i in 0..(bills_clauses.length-2)
 
     	diffs_for_bill_version = bills_clauses[i].select do |clause|
     		previous_version_of_clause = bills_clauses[i+1].find{ |c| c[:title] == clause[:title] }
     		return true if (previous_version_of_clause).nil?
 
     		# Select the elements where the diff isn't nil:
-    		!diff(clause[:text], previous_version_of_clause[:text])
+    		!Diffy::Diff.new(clause[:text], previous_version_of_clause[:text])
     	end
 
     	diffs << diffs_for_bill_version
@@ -113,7 +113,7 @@ module DiffBill
 			end
 
 			doc = Nokogiri::HTML(fullBill)
-			doc = ReverseMarkdown.parse doc 
+			doc = ReverseMarkdown.parse doc
 			doc = doc.split(%r{^\#?\#\#\# })
 
 			#doc.search('.LegP1ContainerFirst').each do |clause|
@@ -131,7 +131,7 @@ module DiffBill
 
 		clauses = []
 
-		if doc 
+		if doc
 			doc.each do |clauseunedited|
 				clause={}
 				clause[:no] = clauseunedited[/\A(\d+)\s/,1]
