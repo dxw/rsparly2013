@@ -1,33 +1,35 @@
 # encoding: utf-8
 require 'nokogiri'
 require 'open-uri'
-
-require 'legislation_api'
-include LegislationApi
+require 'diffy'
 
 module DiffBill
 
 	def getDiffsFromUrl(url)
 		bills_clauses = getVersionsOfBillFromUrl(url).map do |bill_version|
-      getClausesFromBillVersion(bill_version)
-    end
+	      getClausesFromBillVersion(bill_version)
+	    end
 
-    diffs =[]
-    for i in 0..(bills_clauses.length-2)
+	    diffs =[]
 
-    	diffs_for_bill_version = bills_clauses[i].select do |clause|
-    		previous_version_of_clause = bills_clauses[i+1].find{ |c| c[:title] == clause[:title] }
-    		return true if (previous_version_of_clause).nil?
+	    for i in 0..(bills_clauses.length-2)
 
-    		# Select the elements where the diff isn't nil:
-    		!Diffy::Diff.new(clause[:text], previous_version_of_clause[:text])
-    	end
+	    	diffs_for_bill_version = bills_clauses[i].select do |clause|
+	    		previous_version_of_clause = bills_clauses[i+1].find{ |c| c[:title] == clause[:title] }
+	    		if (previous_version_of_clause).nil?
+	    			true
+	    		else
+	    			# Select the elements where the diff isn't nil:
+	    			Diffy::Diff.new(clause[:text], previous_version_of_clause[:text]).to_s != ''
+	    		end
+	    	end
 
-    	diffs << diffs_for_bill_version
+	    	diffs << diffs_for_bill_version
+	    end
 
-    end
+	    return diffs
 
-  end
+	end
 
 
 
@@ -137,7 +139,7 @@ module DiffBill
 				clause[:no] = clauseunedited[/\A(\d+)\s/,1]
 				clause[:title] = clauseunedited[/\A\d+\s([\w\s\-:;\."“”]+)\n\n/,1]
 				clause[:text] = clauseunedited.gsub(/\A\d+\s[\w\s\-:;\."“”]+\n\n/,'')
-				clauses << clause
+				clauses << clause unless !clause[:title] or !clause[:no]
 			end
 		end
 
