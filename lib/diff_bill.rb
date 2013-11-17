@@ -6,6 +6,31 @@ require 'legislation_api'
 include LegislationApi
 
 module DiffBill
+
+	def getDiffsFromUrl(url)
+		bills_clauses = previous_versions.map do |bill_version|
+      getClausesFromBillVersion(bill_version)
+    end
+
+    diffs =[]
+    for i in 0..(bills_clauses-2)
+
+    	diffs_for_bill_version = bills_clauses[i].select do |clause|
+    		previous_version_of_clause = bills_clauses[i+1].find{ |c| c[:title] == clause[:title] }
+    		return true if (previous_version_of_clause).nil?
+
+    		# Select the elements where the diff isn't nil:
+    		!diff(clause[:text], previous_version_of_clause[:text])
+    	end
+
+    	diffs << diffs_for_bill_version
+
+    end
+
+  end
+
+
+
 	#usage getVersionsOfBillFromUrl('http://services.parliament.uk/bills/2013-14/marriagesamesexcouplesbill/documents.html')
 	def getVersionsOfBillFromUrl(url)
 		# Add error control
@@ -39,6 +64,7 @@ module DiffBill
 		url = bill[:url]
 
 		if url.include? 'legislation.gov.uk'
+
 			title=bill[:title][/(.*\d\d\d\d)\s.*/,1]
 			title = URI.escape(title)
 
@@ -56,8 +82,9 @@ module DiffBill
 			doc.css('.LegExtentRestriction, .LegPrelim, .LegBlockNotYetInForceHeading, h1, h2, h3').remove
 			doc = ReverseMarkdown.parse doc
 			doc = doc.split(%r{^#### })
+
 		else
-			
+
 			doc = Nokogiri::HTML(open(url))
 			#urlbase = url[/.*\/([\w-]+)\d+.htm/,1]
 
@@ -91,7 +118,7 @@ module DiffBill
 
 			#doc.search('.LegP1ContainerFirst').each do |clause|
 			#end
-			
+
 
 			# # while doc.at('h1:last') and doc.at('h1:last').text.include? 'SCHEDULE'
 			# # 	#this should remove the schedules...
