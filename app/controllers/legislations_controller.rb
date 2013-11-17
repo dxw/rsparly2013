@@ -5,6 +5,8 @@ require 'diff_bill'
 include DiffBill
 require 'debates'
 
+
+
 #This is just for the simple_format...
 #require 'action_view/helpers/text_helper'
 
