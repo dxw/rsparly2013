@@ -1,7 +1,7 @@
 %h1 Debate for amendment #{ @amendment_number }
 
 - @debate.each do |debate_segment|
-  .row
+  .row.debate
     .col-md-4
       %h4
         = debate_segment.speaker["title"]
