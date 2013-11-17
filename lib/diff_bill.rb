@@ -77,8 +77,9 @@ module DiffBill
 	    		doc.each do |clauseunedited|
 	    			clause={}
 	    			clause[:no] = clauseunedited[/\A(\d+\w+)\s/,1]
-	    			clause[:text] = clauseunedited.gsub(%r/\A\d+\w+\s/,'')
-	    			clauses << clause unless !clause[:no]
+	    			clause[:title] = clauseunedited[/\A\d+\w+\s([\w\s]+)\n\n/,1]
+	    			clause[:text] = clauseunedited.gsub(%r/\A[\d\w\s]+\n\n/,'')
+	    			clauses << clause unless !clause[:no] or !clause[:title]
 	    		end
 			end
 
