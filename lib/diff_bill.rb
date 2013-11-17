@@ -51,7 +51,7 @@ module DiffBill
 				pag << val unless pag.include? val
 			end
 
-			clauses = []
+			fullBill = ""
 
 			pag.each do |nr|
 				url = url.gsub(/(.*\/[\w-]+)\d+.htm/,'\1')+nr+'.htm'
@@ -59,29 +59,36 @@ module DiffBill
 				doc = doc.search('.LegContent')[0]
 				doc.search('.newPage').remove
 				doc.search('.chunkPage').remove
-				doc.search('h2','h3').remove
-
-				while doc.at('h1:last') and doc.at('h1:last').text.include? 'SCHEDULE'
-					#this should remove the schedules...
-					while node = doc.at('h1:last').next
-				 	  node.remove
-					end
-					doc.at('h1:last').remove
-				end
-
-				doc.search('h1').remove
-
-
-				doc = ReverseMarkdown.parse doc 
-	    		doc = doc.split(%r{^#### })
-	    		doc.each do |clauseunedited|
-	    			clause={}
-	    			clause[:no] = clauseunedited[/\A(\d+\w+)\s/,1]
-	    			clause[:title] = clauseunedited[/\A\d+\w+\s([\w\s]+)\n\n/,1]
-	    			clause[:text] = clauseunedited.gsub(%r/\A[\d\w\s]+\n\n/,'')
-	    			clauses << clause unless !clause[:no] or !clause[:title]
-	    		end
+				doc.search('.noteLink').remove
+				doc.search('.LegClearPart').remove
+				fullBill += doc.to_s
 			end
+
+			doc =  Nokogiri::HTML(fullBill)
+
+			doc.search('h2','h3').remove
+
+			# while doc.at('h1:last') and doc.at('h1:last').text.include? 'SCHEDULE'
+			# 	#this should remove the schedules...
+			# 	while node = doc.at('h1:last').next
+			#  	  node.remove
+			# 	end
+			# 	doc.at('h1:last').remove
+			# end
+
+			clauses = []
+
+			doc = ReverseMarkdown.parse doc 
+    		doc = doc.split(%r{^#### })
+    		doc.each do |clauseunedited|
+    			clause={}
+    			clause[:no] = clauseunedited[/\A(\d+)\s/,1]
+    			#clause[:title] = clauseunedited[/\A\d+\w+\s([\w\s]+)\n/,1]
+    			#clause[:text] = clauseunedited.gsub(%r/\A[\w\s]+\n/,'')
+    			clause[:text] = clauseunedited
+    			clauses << clause
+    		end
+			
 
 			return clauses
 		end
