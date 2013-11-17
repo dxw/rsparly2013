@@ -3,4 +3,21 @@
     margin-top: 0;
     padding-top: 0;
   }
+
+  &.amendments {
+    display: inline-block;
+    margin: $spacer 0;
+
+    .amendment {
+      margin-top: 0;
+
+      time {
+        padding-left: 0;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
 }
