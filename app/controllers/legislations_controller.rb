@@ -1,6 +1,7 @@
 #It defines the getLegislationParsedForTitle(title) method
 require 'legislation_api'
 include LegislationApi
+require 'debates'
 
 #This is just for the simple_format...
 #require 'action_view/helpers/text_helper'
@@ -18,8 +19,19 @@ class LegislationsController < ApplicationController
     # bill_url = 'http://services.parliament.uk/bills/2013-14/marriagesamesexcouplesbill/documents.html'
     legislation_title = 'Marriage (Same Sex Couples) Act 2013'
 
+    house = :lords
+    debate_url = "http://www.publications.parliament.uk/pa/ld201314/ldhansrd/text/130624-0001.htm#13062413000429"
+
+
+
     @legislation = getLegislationParsedForTitle(legislation_title)
-    # getClausesFromBillVersion(bill_url)
+
+
+    # Add in the amendments for each clause
+    amendments = Debates.new.amendment_debates_from_url(house, debate_url)
+    @legislation.each do |l|
+      l[:amendments] = amendments
+    end
   end
 
 end
