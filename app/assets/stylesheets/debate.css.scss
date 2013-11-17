@@ -1,9 +1,9 @@
 .debate {
   margin-top: $padding;
-  
-  h4 {
-    margin-top: 0;
-    padding-top: 0;
+
+  h3 {
+    margin: 0;
+    padding: 0;
   }
 
   &.amendments {
@@ -28,7 +28,36 @@
     }
   }
 
+  section.col-md-9 {
+    p {
+      @include fontsize(22);
+      @include lineheight(32);
+    }
+  }
+
   button.btn {
     margin-left: 80px;
   }
+
+  aside {
+
+    .wrapper {
+      border-top: $line;
+      padding-top: $padding;
+    }
+
+    .img {
+      display: inline-block;
+      float: left;
+      margin-right: 10px;
+    }
+
+    .title {
+      float: left; 
+      display: inline-block;
+      width: 200px;
+    }
+
+  }
+
 }
