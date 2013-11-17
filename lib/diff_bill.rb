@@ -56,6 +56,13 @@ module DiffBill
 		    doc.css('.LegExtentRestriction, .LegPrelim, .LegBlockNotYetInForceHeading, h1, h2, h3').remove
 		    doc = ReverseMarkdown.parse doc
 		    doc = doc.split(%r{^#### })
+		    doc.each do |clauseunedited|
+    			clause={}
+    			clause[:no] = clauseunedited[/\A(\d+)\s/,1]
+    			clause[:title] = clauseunedited[/\A\d+\s([\w\s]+)\n\n/,1]
+    			clause[:text] = clauseunedited.gsub(%r/\A[\w\s]+\n\n/,'')
+    			clauses << clause
+    		end
 		else
 			
 			doc = Nokogiri::HTML(open(url))
