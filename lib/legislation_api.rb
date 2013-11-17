@@ -27,7 +27,7 @@ module LegislationApi
 
     markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, :autolink => true, :space_after_headers => true, :tables => true)
     doc = doc.map do |clause|
-      markdown.render(clause.to_s).html_safe
+      { text: markdown.render(clause.to_s).html_safe }
     end
     return doc
   end
