@@ -7,6 +7,7 @@
   &.amendments {
     display: inline-block;
     margin: $spacer 0;
+    padding-top:0;
 
     .amendment {
       margin-top: 0;
@@ -19,5 +20,9 @@
         margin-bottom: 0;
       }
     }
+  }
+
+  button.btn {
+    margin-left: 80px;
   }
 }

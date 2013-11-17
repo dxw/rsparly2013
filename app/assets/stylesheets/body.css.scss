@@ -8,7 +8,6 @@ html {
 body {
   font-family: $fontstack;
   @include fontsize(20); 
-  margin-bottom: $spacer;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -62,6 +61,10 @@ header.header {
   background: $blue;
   border: none;
   padding: 10px 20px;
+}
+
+footer.footer {
+  margin: $spacer 0;
 }
 
 // Horrible classes used by external data sources
