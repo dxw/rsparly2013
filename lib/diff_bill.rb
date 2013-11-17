@@ -10,7 +10,7 @@ module DiffBill
 
 		vBills = []
 
-		items = doc.search('.bill-items')[0 .. 2]
+		items = doc.search('.bill-items')[0 .. 1]
 		items.each do |table|
 
 			table.children.css('.tr1','.tr2').each do |bill|
@@ -24,10 +24,23 @@ module DiffBill
 					vBill[:title] = info.text.gsub(%r/\r\n/,'').gsub(" | ",'')
 				end
 
-				vBills << vBill
+				vBills << vBill unless vBill[:title].include? 'mendments'
+
 	    	end
 		end
 
 		return vBills
+	end
+
+	def getClausesFromBillVersion(bill)
+		if url.include? 'legislation.gov.uk'
+			puts 'This is the final bill'
+		else
+			doc = Nokogiri::HTML(open(bill[:url]))
+			urlbase = url[/.*\/([\w-]+)\d+.htm/,1]
+			doc.search('.LegContentsPart').children.search('a').each do |clauseAnchor|
+				puts  clauseAnchor
+			end
+		end
 	end
 end
