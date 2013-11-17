@@ -5,56 +5,31 @@ require 'open-uri'
 #require 'action_view/helpers/text_helper'
 
 module LegislationApi
-	#include ActionView::Helpers::TextHelper
+  #include ActionView::Helpers::TextHelper
 
-	def getLegislationParsedForTitle(title='Marriage (Same Sex Couples) Act 2013')
-	    
-	    title = URI.escape(title)
+  def getLegislationParsedForTitle(title='Marriage (Same Sex Couples) Act 2013')
 
-	  	url = URI.parse('http://www.legislation.gov.uk/id?title='+title)
-		req = Net::HTTP::Get.new(url)
-		res = Net::HTTP.start(url.host, 80) {|http|
-	  		http.request(req)
-		}
+      title = URI.escape(title)
 
-		uri = res.header["location"].gsub('/id','')
+      url = URI.parse('http://www.legislation.gov.uk/id?title='+title)
+    req = Net::HTTP::Get.new(url)
+    res = Net::HTTP.start(url.host, 80) {|http|
+        http.request(req)
+    }
 
-		doc = Nokogiri::HTML(open('http://legislation.data.gov.uk'+uri+'/data.htm'))
+    uri = res.header["location"].gsub('/id','')
 
-	    clauses = []
-	    clauses_doc = doc.css('.LegBlockNotYetInForce')
-	    clauses_doc.each do |clause_doc|
-	    	clause = { contents: [] }
-	    	clause_doc.children.css('.LegP1ContainerFirst','.LegP1Container, .LegP2Container, .LegP3Container').each do |p|
+    doc = Nokogiri::HTML(open('http://legislation.data.gov.uk'+uri+'/data.htm'))
 
-	    		content = {}
+    doc.css('.LegExtentRestriction, .LegPrelim, .LegBlockNotYetInForceHeading, h1, h2, h3').remove
+    doc = ReverseMarkdown.parse doc
+    doc = doc.split(%r{^#### })
 
-	    		classes = p.attr(:class).split(" ")
-	    		puts classes.inspect
-	    		if classes.include?("LegP1Container") or classes.include?("LegP1ContainerFirst")
-	    			content[:type] = :title
-	    			content[:text] = p.css('.LegP1GroupTitleFirst').text
-	    			content[:no] = p.css('.LegP1No').text
-	    		elsif classes.include?("LegP2Container") or classes.include?("LegP3Container")
-	    			content[:type] = :paragraph
-	    			content[:text] = p.css('.LegRHS').text
-	    			content[:no] = p.children.first.text
-	    		end
-
-	    		clause[:contents] << content
-
-	    	end
-	    	clauses << clause
-	    end
-
-	    return clauses
-	    # doc = ReverseMarkdown.parse doc 
-	    # doc = doc.split(%r{^#### })
-	    
-	    #simple_format(doc)
-
-	    #markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, :autolink => true, :space_after_headers => true, :tables => true)
-	    #@mdoc = markdown.render(doc.to_s).html_safe
-	end
+    markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, :autolink => true, :space_after_headers => true, :tables => true)
+    doc = doc.map do |clause|
+      { text: markdown.render(clause.to_s).html_safe }
+    end
+    return doc
+  end
 
 end
