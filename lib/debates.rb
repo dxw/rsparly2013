@@ -10,8 +10,8 @@ class Debates
 
 
   def client
-    # @client ||= Twfy::Client.new(Figaro.env.theyworkforyou_api_key)
-    Twfy::Client.new(Figaro.env.theyworkforyou_api_key)
+    # @client ||= Twfy::Client.new(ENV['theyworkforyou_api_key'])
+    Twfy::Client.new(ENV['theyworkforyou_api_key'])
   end
 
 
