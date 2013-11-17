@@ -10,7 +10,7 @@ gem 'nokogiri',       '~> 1.6'
 gem "redcarpet",      '~> 3.0.0'
 gem 'reverse_markdown'
 gem 'ranked-model'
-
+gem 'diffy'
 
 # Assets
 gem 'sass-rails',     '~> 4.0.0'
