@@ -24,7 +24,7 @@ module DiffBill
 	    		end
 	    	end
 
-	    	diffs << diffs_for_bill_version
+	    	diffs << diffs_for_bill_version unless diffs_for_bill_version==[]
 	    end
 
 	    return diffs
