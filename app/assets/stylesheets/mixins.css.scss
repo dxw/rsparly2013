@@ -3,6 +3,11 @@
   font-size: $size * 0.1rem;
 }
 
+@mixin lineheight($size) {
+  line-height: $size * 1px;
+  line-height: $size * 0.1rem;
+}
+
 @mixin boxsizing($value) { 
   -moz-box-sizing: $value;
   -webkit-box-sizing: $value;
