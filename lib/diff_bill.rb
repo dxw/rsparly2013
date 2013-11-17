@@ -57,15 +57,16 @@ module DiffBill
 				url = url.gsub(/(.*\/[\w-]+)\d+.htm/,'\1')+nr+'.htm'
 				doc = Nokogiri::HTML(open(url))
 				doc = doc.search('.LegContent')[0]
-				doc.search('.newpage').remove
-				doc.search('.chukpage').remove
+				doc.search('.newPage').remove
+				doc.search('.chunkPage').remove
 				doc.search('h2','h3').remove
 
-				if doc.at('h1:last')
+				while doc.at('h1:last') and doc.at('h1:last').text.include? 'SCHEDULE'
 					#this should remove the schedules...
 					while node = doc.at('h1:last').next
 				 	  node.remove
 					end
+					doc.at('h1:last').remove
 				end
 
 				doc.search('h1').remove
