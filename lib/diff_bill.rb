@@ -2,6 +2,9 @@
 require 'nokogiri'
 require 'open-uri'
 
+require 'legislation_api'
+include LegislationApi
+
 module DiffBill
 
 	def getDiffsFromUrl(url)
@@ -62,8 +65,30 @@ module DiffBill
 
 		if url.include? 'legislation.gov.uk'
 
-			puts 'This is the final bill, use LegislationAPI'
+			title=bill[:title][/(.*\d\d\d\d)\s.*/,1]
+			title = URI.escape(title)
 
+		    url = URI.parse('http://www.legislation.gov.uk/id?title='+title)
+
+		    req = Net::HTTP::Get.new(url)
+		    res = Net::HTTP.start(url.host, 80) {|http|
+		        http.request(req)
+		    }
+
+		    uri = res.header["location"].gsub('/id','')
+
+		    doc = Nokogiri::HTML(open('http://legislation.data.gov.uk'+uri+'/data.htm'))
+
+		    doc.css('.LegExtentRestriction, .LegPrelim, .LegBlockNotYetInForceHeading, h1, h2, h3').remove
+		    doc = ReverseMarkdown.parse doc
+		    doc = doc.split(%r{^#### })
+		    doc.each do |clauseunedited|
+    			clause={}
+    			clause[:no] = clauseunedited[/\A(\d+)\s/,1]
+    			clause[:title] = clauseunedited[/\A\d+\s([\w\s]+)\n\n/,1]
+    			clause[:text] = clauseunedited.gsub(%r/\A[\w\s]+\n\n/,'')
+    			clauses << clause
+    		end
 		else
 
 			doc = Nokogiri::HTML(open(url))
@@ -86,31 +111,36 @@ module DiffBill
 				doc.search('.chunkPage').remove
 				doc.search('.noteLink').remove
 				doc.search('.LegClearPart').remove
+				doc.search('.LegPrelims').remove
+				doc.search('h2').remove
+				doc.search('h3.LegPblock').remove
+				doc.search('.linenumber').remove
 				fullBill += doc.to_s
 			end
 
 			doc =  Nokogiri::HTML(fullBill)
 
-			doc.search('h2','h3').remove
+			#doc.search('.LegP1ContainerFirst').each do |clause|
+			#end
 
-			# while doc.at('h1:last') and doc.at('h1:last').text.include? 'SCHEDULE'
-			# 	#this should remove the schedules...
-			# 	while node = doc.at('h1:last').next
-			#  	  node.remove
-			# 	end
-			# 	doc.at('h1:last').remove
-			# end
+
+			# # while doc.at('h1:last') and doc.at('h1:last').text.include? 'SCHEDULE'
+			# # 	#this should remove the schedules...
+			# # 	while node = doc.at('h1:last').next
+			# #  	  node.remove
+			# # 	end
+			# # 	doc.at('h1:last').remove
+			# # end
 
 			clauses = []
 
 			doc = ReverseMarkdown.parse doc
-    		doc = doc.split(%r{^#### })
+    		doc = doc.split(%r{^\#?\#\#\# })
     		doc.each do |clauseunedited|
     			clause={}
     			clause[:no] = clauseunedited[/\A(\d+)\s/,1]
-    			#clause[:title] = clauseunedited[/\A\d+\w+\s([\w\s]+)\n/,1]
-    			#clause[:text] = clauseunedited.gsub(%r/\A[\w\s]+\n/,'')
-    			clause[:text] = clauseunedited
+    			clause[:title] = clauseunedited[/\A\d+\s([\w\s]+)\n\n/,1]
+    			clause[:text] = clauseunedited.gsub(%r/\A[\w\s]+\n\n/,'')
     			clauses << clause
     		end
 

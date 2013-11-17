@@ -24,7 +24,7 @@ class LegislationsController < ApplicationController
     bill_url = 'http://services.parliament.uk/bills/2013-14/marriagesamesexcouplesbill/documents.html'
 
 
-    @clauses = getLegislationParsedForTitle(legislation_title)
+    @clauses = getLegislationParsedForTitle(params[:id])
 
 
     previous_versions = getVersionsOfBillFromUrl(bill_url)
