@@ -1,26 +1,28 @@
-- legislation.each do |clause|
+- clauses.each do |clause|
   %section.legislation
-    %p= clause.text
+    %p= clause[:text]
     %a.expand Amendments
   %aside.amendments
-    .amendment
-      %span.process.commons 1
-      %p Banh mi Carles Pitchfork vegan chambray, pour-over messenger bag church-key. Gentrify vinyl raw denim cornhole messenger bag. McSweeney's jean shorts banjo polaroid authentic keffiyeh church-key, pork belly YOLO beard raw denim Austin Schlitz. Stumptown Intelligentsia raw denim, Pitchfork tote bag leggings American Apparel pickled VHS. Organic ethical Brooklyn, meh ethnic direct trade Carles messenger bag keytar Intelligentsia cardigan Wes Anderson. Wayfarers keffiyeh chambray aesthetic, iPhone ethnic raw denim beard master cleanse mustache. Polaroid pour-over literally, Portland Godard fixie organic gluten-free wayfarers.
-      .meta
-        %a.debate Read debate
-        %time 10th January 2013
-    .amendment
-      %span.process.lords 1
-      %p Banh mi Carles Pitchfork vegan chambray, pour-over messenger bag church-key. Gentrify vinyl raw denim cornhole messenger bag. McSweeney's jean shorts banjo polaroid authentic keffiyeh church-key, pork belly YOLO beard raw denim Austin Schlitz. Stumptown Intelligentsia raw denim, Pitchfork tote bag leggings American Apparel pickled VHS. Organic ethical Brooklyn, meh ethnic direct trade Carles messenger bag keytar Intelligentsia cardigan Wes Anderson. Wayfarers keffiyeh chambray aesthetic, iPhone ethnic raw denim beard master cleanse mustache. Polaroid pour-over literally, Portland Godard fixie organic gluten-free wayfarers.
-      .meta
-        %a.debate Read debate
-        %time 10th January 2013
-    .amendment
-      %span.process.commons 1
-      %p Banh mi Carles Pitchfork vegan chambray, pour-over messenger bag church-key. Gentrify vinyl raw denim cornhole messenger bag. McSweeney's jean shorts banjo polaroid authentic keffiyeh church-key, pork belly YOLO beard raw denim Austin Schlitz. Stumptown Intelligentsia raw denim, Pitchfork tote bag leggings American Apparel pickled VHS. Organic ethical Brooklyn, meh ethnic direct trade Carles messenger bag keytar Intelligentsia cardigan Wes Anderson. Wayfarers keffiyeh chambray aesthetic, iPhone ethnic raw denim beard master cleanse mustache. Polaroid pour-over literally, Portland Godard fixie organic gluten-free wayfarers.
-      .meta
-        %a.debate Read debate
-        %time 10th January 2013
+    - clause[:amendments].each do |amendment|
+      .amendment
+        %span.process.lords 1
+        %p= clause[:text]
+        .meta
+          =link_to "Read debate", debate_path(amendment[:amendment_number]), :class => "debate"
+          %time 10th January 2013
+
+/ .amendment
+/   %span.process.lords 1
+/   %p Banh mi Carles Pitchfork vegan chambray, pour-over messenger bag church-key. Gentrify vinyl raw denim cornhole messenger bag. McSweeney's jean shorts banjo polaroid authentic keffiyeh church-key, pork belly YOLO beard raw denim Austin Schlitz. Stumptown Intelligentsia raw denim, Pitchfork tote bag leggings American Apparel pickled VHS. Organic ethical Brooklyn, meh ethnic direct trade Carles messenger bag keytar Intelligentsia cardigan Wes Anderson. Wayfarers keffiyeh chambray aesthetic, iPhone ethnic raw denim beard master cleanse mustache. Polaroid pour-over literally, Portland Godard fixie organic gluten-free wayfarers.
+/   .meta
+/     %a.debate Read debate
+/     %time 10th January 2013
+/ .amendment
+/   %span.process.commons 1
+/   %p Banh mi Carles Pitchfork vegan chambray, pour-over messenger bag church-key. Gentrify vinyl raw denim cornhole messenger bag. McSweeney's jean shorts banjo polaroid authentic keffiyeh church-key, pork belly YOLO beard raw denim Austin Schlitz. Stumptown Intelligentsia raw denim, Pitchfork tote bag leggings American Apparel pickled VHS. Organic ethical Brooklyn, meh ethnic direct trade Carles messenger bag keytar Intelligentsia cardigan Wes Anderson. Wayfarers keffiyeh chambray aesthetic, iPhone ethnic raw denim beard master cleanse mustache. Polaroid pour-over literally, Portland Godard fixie organic gluten-free wayfarers.
+/   .meta
+/     %a.debate Read debate
+/     %time 10th January 2013
 
 / %section.legislation.removed
 /   %h3
