@@ -1,4 +1,6 @@
 .debate {
+  margin-top: $padding;
+  
   h4 {
     margin-top: 0;
     padding-top: 0;
@@ -6,7 +8,12 @@
 
   &.amendments {
     display: inline-block;
-    margin: $spacer 0;
+    margin: $padding 0 $spacer 0;
+    padding-top:0;
+
+    h2 {
+      margin-top: 0;
+    }
 
     .amendment {
       margin-top: 0;
@@ -19,5 +26,9 @@
         margin-bottom: 0;
       }
     }
+  }
+
+  button.btn {
+    margin-left: 80px;
   }
 }

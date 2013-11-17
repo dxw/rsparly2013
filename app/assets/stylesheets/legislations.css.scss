@@ -1,3 +1,25 @@
+.bills {
+  h1 {
+    margin-bottom: $padding;
+  }
+
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+    border-top: 1px dotted $gray-light;
+    margin-bottom: $spacer;
+
+    li {
+      border-bottom: 1px dotted $gray-light;
+      padding: $spacer 0;
+
+      h2 {
+        margin-top: 0;
+      }
+    }
+  }
+}
+
 .legislation {
   padding: $padding $padding $spacer $padding;
   background: $paleblue;
