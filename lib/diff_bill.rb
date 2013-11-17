@@ -8,7 +8,7 @@ include LegislationApi
 module DiffBill
 
 	def getDiffsFromUrl(url)
-		bills_clauses = previous_versions.map do |bill_version|
+		bills_clauses = getVersionsOfBillFromUrl(url).map do |bill_version|
       getClausesFromBillVersion(bill_version)
     end
 
