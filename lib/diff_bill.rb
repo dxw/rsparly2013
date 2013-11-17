@@ -2,6 +2,9 @@
 require 'nokogiri'
 require 'open-uri'
 
+require 'legislation_api'
+include LegislationApi
+
 module DiffBill
 	#usage getVersionsOfBillFromUrl('http://services.parliament.uk/bills/2013-14/marriagesamesexcouplesbill/documents.html')
 	def getVersionsOfBillFromUrl(url)
@@ -36,9 +39,23 @@ module DiffBill
 		url = bill[:url]
 
 		if url.include? 'legislation.gov.uk'
-			
-			puts 'This is the final bill, use LegislationAPI'
+			title=bill[:title][/(.*\d\d\d\d)\s.*/,1]
+			title = URI.escape(title)
 
+		    url = URI.parse('http://www.legislation.gov.uk/id?title='+title)
+		    
+		    req = Net::HTTP::Get.new(url)
+		    res = Net::HTTP.start(url.host, 80) {|http|
+		        http.request(req)
+		    }
+
+		    uri = res.header["location"].gsub('/id','')
+
+		    doc = Nokogiri::HTML(open('http://legislation.data.gov.uk'+uri+'/data.htm'))
+
+		    doc.css('.LegExtentRestriction, .LegPrelim, .LegBlockNotYetInForceHeading, h1, h2, h3').remove
+		    doc = ReverseMarkdown.parse doc
+		    doc = doc.split(%r{^#### })
 		else
 			
 			doc = Nokogiri::HTML(open(url))
