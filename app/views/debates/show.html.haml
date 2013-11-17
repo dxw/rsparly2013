@@ -1,0 +1,22 @@
+%h2 Debate for amendment #{ @amendment_number }
+
+- @debate.each do |debate_segment|
+  .row.debate
+    .col-md-4
+      %h4
+        = debate_segment.speaker["title"]
+        = debate_segment.speaker["first_name"]
+        = debate_segment.speaker["last_name"]
+        ="(#{debate_segment.speaker["desc"]})"
+
+      - if debate_segment.speaker["image"]
+        %img{ src: URI.join("http://www.theyworkforyou.com/", debate_segment.speaker["image"]).to_s }
+
+    .col-md-8
+      != debate_segment.body
+      %p
+        %em
+          Source:
+          = link_to debate_segment.source_url
+
+

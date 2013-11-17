@@ -16,6 +16,10 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
 }
 
+h4 {
+  @include fontsize(20);
+}
+
 a {
   color: $blue;
 
@@ -58,4 +62,10 @@ header {
   background: $blue;
   border: none;
   padding: 10px 20px;
+}
+
+// Horrible classes used by external data sources
+
+.italic {
+  font-style: italic;
 }
