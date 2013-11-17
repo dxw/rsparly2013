@@ -22,7 +22,7 @@ class LegislationsController < ApplicationController
     house = :lords
     debate_url = "http://www.publications.parliament.uk/pa/ld201314/ldhansrd/text/130624-0001.htm#13062413000429"
 
-    @clauses = getLegislationParsedForTitle(legislation_title)
+    @clauses = getLegislationParsedForTitle(params[:id])
 
     # Add in the amendments for each clause
     amendments = Debates.new.amendment_debates_from_url(house, debate_url)
