@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 ruby '2.0.0'
 
 gem 'rails',          '4.0.0'
-gem 'sqlite3',        '~> 1.3.8'
 gem 'figaro',         '~> 0.7.0'
 gem 'zeus',           '~> 0.13.3'
 gem 'twfy',           '~> 1.1'
@@ -25,3 +24,11 @@ gem "quiet_assets",   '~> 1.0.2'
 gem 'jquery-rails'
 gem 'turbolinks'
 gem 'puma'
+
+group :development, :test do
+  gem 'sqlite3',      '~> 1.3.8'
+end
+
+group :production do
+  gem 'pg'
+end
