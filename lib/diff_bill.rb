@@ -2,7 +2,35 @@
 require 'nokogiri'
 require 'open-uri'
 
+require 'legislation_api'
+include LegislationApi
+
 module DiffBill
+
+	def getDiffsFromUrl(url)
+		bills_clauses = previous_versions.map do |bill_version|
+      getClausesFromBillVersion(bill_version)
+    end
+
+    diffs =[]
+    for i in 0..(bills_clauses-2)
+
+    	diffs_for_bill_version = bills_clauses[i].select do |clause|
+    		previous_version_of_clause = bills_clauses[i+1].find{ |c| c[:title] == clause[:title] }
+    		return true if (previous_version_of_clause).nil?
+
+    		# Select the elements where the diff isn't nil:
+    		!diff(clause[:text], previous_version_of_clause[:text])
+    	end
+
+    	diffs << diffs_for_bill_version
+
+    end
+
+  end
+
+
+
 	#usage getVersionsOfBillFromUrl('http://services.parliament.uk/bills/2013-14/marriagesamesexcouplesbill/documents.html')
 	def getVersionsOfBillFromUrl(url)
 		# Add error control
@@ -26,7 +54,7 @@ module DiffBill
 
 				vBills << vBill unless vBill[:title].include? 'mendments'
 
-	    	end
+			end
 		end
 
 		return vBills
@@ -36,11 +64,27 @@ module DiffBill
 		url = bill[:url]
 
 		if url.include? 'legislation.gov.uk'
-			
-			puts 'This is the final bill, use LegislationAPI'
+
+			title=bill[:title][/(.*\d\d\d\d)\s.*/,1]
+			title = URI.escape(title)
+
+			url = URI.parse('http://www.legislation.gov.uk/id?title='+title)
+
+			req = Net::HTTP::Get.new(url)
+			res = Net::HTTP.start(url.host, 80) {|http|
+				http.request(req)
+			}
+
+			uri = res.header["location"].gsub('/id','')
+
+			doc = Nokogiri::HTML(open('http://legislation.data.gov.uk'+uri+'/data.htm'))
+
+			doc.css('.LegExtentRestriction, .LegPrelim, .LegBlockNotYetInForceHeading, h1, h2, h3').remove
+			doc = ReverseMarkdown.parse doc
+			doc = doc.split(%r{^#### })
 
 		else
-			
+
 			doc = Nokogiri::HTML(open(url))
 			#urlbase = url[/.*\/([\w-]+)\d+.htm/,1]
 
@@ -61,36 +105,42 @@ module DiffBill
 				doc.search('.chunkPage').remove
 				doc.search('.noteLink').remove
 				doc.search('.LegClearPart').remove
+				doc.search('.LegPrelims').remove
+				doc.search('h2').remove
+				doc.search('h3.LegPblock').remove
+				doc.search('.linenumber').remove
 				fullBill += doc.to_s
 			end
 
-			doc =  Nokogiri::HTML(fullBill)
-
-			doc.search('h2','h3').remove
-
-			# while doc.at('h1:last') and doc.at('h1:last').text.include? 'SCHEDULE'
-			# 	#this should remove the schedules...
-			# 	while node = doc.at('h1:last').next
-			#  	  node.remove
-			# 	end
-			# 	doc.at('h1:last').remove
-			# end
-
-			clauses = []
-
+			doc = Nokogiri::HTML(fullBill)
 			doc = ReverseMarkdown.parse doc 
-    		doc = doc.split(%r{^#### })
-    		doc.each do |clauseunedited|
-    			clause={}
-    			clause[:no] = clauseunedited[/\A(\d+)\s/,1]
-    			#clause[:title] = clauseunedited[/\A\d+\w+\s([\w\s]+)\n/,1]
-    			#clause[:text] = clauseunedited.gsub(%r/\A[\w\s]+\n/,'')
-    			clause[:text] = clauseunedited
-    			clauses << clause
-    		end
-			
+			doc = doc.split(%r{^\#?\#\#\# })
 
-			return clauses
+			#doc.search('.LegP1ContainerFirst').each do |clause|
+			#end
+
+
+			# # while doc.at('h1:last') and doc.at('h1:last').text.include? 'SCHEDULE'
+			# # 	#this should remove the schedules...
+			# # 	while node = doc.at('h1:last').next
+			# #  	  node.remove
+			# # 	end
+			# # 	doc.at('h1:last').remove
+			# # end
 		end
+
+		clauses = []
+
+		if doc 
+			doc.each do |clauseunedited|
+				clause={}
+				clause[:no] = clauseunedited[/\A(\d+)\s/,1]
+				clause[:title] = clauseunedited[/\A\d+\s([\w\s\-:;\."“”]+)\n\n/,1]
+				clause[:text] = clauseunedited.gsub(/\A\d+\s[\w\s\-:;\."“”]+\n\n/,'')
+				clauses << clause
+			end
+		end
+
+		return clauses
 	end
 end

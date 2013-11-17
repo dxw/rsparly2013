@@ -46,6 +46,9 @@ header.header {
     letter-spacing: -2px;
     color: $blue;
     margin-bottom: 0;
+    background: asset-url("drawer.svg") no-repeat center left;
+    padding-left: 100px;
+    background-size: 80px 80px;
   }
 
   h2 {
