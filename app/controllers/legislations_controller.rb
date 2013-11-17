@@ -5,6 +5,8 @@ require 'diff_bill'
 include DiffBill
 require 'debates'
 
+
+
 #This is just for the simple_format...
 #require 'action_view/helpers/text_helper'
 
@@ -27,14 +29,14 @@ class LegislationsController < ApplicationController
     @clauses = getLegislationParsedForTitle(params[:id])
 
 
-    previous_versions = getVersionsOfBillFromUrl(bill_url)
+    # previous_versions = getVersionsOfBillFromUrl(bill_url)
 
-    # skip the first for the moment:
-    previous_versions.shift
+    # # skip the first for the moment:
+    # previous_versions.shift
 
-    previous_clauses = previous_versions.map do |bill_version|
-      clauses = getClausesFromBillVersion(bill_version)
-    end
+    # previous_clauses = previous_versions.map do |bill_version|
+    #   clauses = getClausesFromBillVersion(bill_version)
+    # end
 
     # Add in the amendments for each clause
     amendments = Debates.new.amendment_debates_from_url(house, debate_url)
