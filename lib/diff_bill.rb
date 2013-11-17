@@ -33,14 +33,55 @@ module DiffBill
 	end
 
 	def getClausesFromBillVersion(bill)
+		url = bill[:url]
+
 		if url.include? 'legislation.gov.uk'
-			puts 'This is the final bill'
+			
+			puts 'This is the final bill, use LegislationAPI'
+
 		else
-			doc = Nokogiri::HTML(open(bill[:url]))
-			urlbase = url[/.*\/([\w-]+)\d+.htm/,1]
+			
+			doc = Nokogiri::HTML(open(url))
+			#urlbase = url[/.*\/([\w-]+)\d+.htm/,1]
+
+			pag = []
+
 			doc.search('.LegContentsPart').children.search('a').each do |clauseAnchor|
-				puts  clauseAnchor
+				val = clauseAnchor['href'][/[\w-]+(\d+).htm\#?.*/,1]
+				pag << val unless pag.include? val
 			end
+
+			clauses = []
+
+			pag.each do |nr|
+				url = url.gsub(/(.*\/[\w-]+)\d+.htm/,'\1')+nr+'.htm'
+				doc = Nokogiri::HTML(open(url))
+				doc = doc.search('.LegContent')[0]
+				doc.search('.newpage').remove
+				doc.search('.chukpage').remove
+				doc.search('h2','h3').remove
+
+				if doc.at('h1:last')
+					#this should remove the schedules...
+					while node = doc.at('h1:last').next
+				 	  node.remove
+					end
+				end
+
+				doc.search('h1').remove
+
+
+				doc = ReverseMarkdown.parse doc 
+	    		doc = doc.split(%r{^#### })
+	    		doc.each do |clauseunedited|
+	    			clause={}
+	    			clause[:no] = clauseunedited[/\A(\d+\w+)\s/,1]
+	    			clause[:text] = clauseunedited.gsub(%r/\A\d+\w+\s/,'')
+	    			clauses << clause unless !clause[:no]
+	    		end
+			end
+
+			return clauses
 		end
 	end
 end
