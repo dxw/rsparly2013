@@ -9,9 +9,10 @@
 
   %body
     .container
-      %header
+      %header.header
         %h1 MetaBill
         %h2 Explore legislation & see the arguments that shaped clauses, news stories and laws.
         = content_for?(:header) ? yield(:header) : yield
 
-      = content_for?(:content) ? yield(:content) : yield
+    .container
+    = content_for?(:content) ? yield(:content) : yield
