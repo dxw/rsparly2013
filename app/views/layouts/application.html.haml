@@ -10,9 +10,31 @@
   %body
     .container
       %header.header
-        %h1 MetaBill
+        %h1
+          %a MetaBill
         %h2 Explore legislation & see the arguments that shaped clauses, news stories and laws.
         = yield(:header) if content_for?(:header)
 
-
       = content_for?(:content) ? yield(:content) : yield
+
+      %footer.footer
+        %strong MetaBill 
+        was created by
+        %a @alexjb
+        ,
+        %a @dgmstuart
+        ,
+        %a @zeeraw
+        , 
+        %a @lily_dart
+        , 
+        %a @hippers
+        , (who work for
+        %a @thedxw
+        ),
+        %a @marcelloseri
+        and
+        %a @steve_upton
+        for 
+        %a Parliament Hack 2013
+

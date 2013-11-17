@@ -1,23 +1,30 @@
 %header 
-  %h1 Debate for amendment #{ @amendment_number }
+  %h1 Amendment #{ @amendment_number }
 
 .row
   .container
-    %aside.debate.amendments
+    %section.debate.amendments
       .amendment 
         %span.process.commons 1
+        %h2 Passed
         %p Banh mi Carles Pitchfork vegan chambray, pour-over messenger bag church-key. Gentrify vinyl raw denim cornhole messenger bag. McSweeney's jean shorts banjo polaroid authentic keffiyeh church-key, pork belly YOLO beard raw denim Austin Schlitz. Stumptown Intelligentsia raw denim, Pitchfork tote bag leggings American Apparel pickled VHS. Organic ethical Brooklyn, meh ethnic direct trade Carles messenger bag keytar Intelligentsia cardigan Wes Anderson. Wayfarers keffiyeh chambray aesthetic, iPhone ethnic raw denim beard master cleanse mustache. Polaroid pour-over literally, Portland Godard fixie organic gluten-free wayfarers.
         .meta
           %time 10th January 2013
       .amendment
+        %h2 Previous
         %span.process.lords 1
         %p Banh mi Carles Pitchfork vegan chambray, pour-over messenger bag church-key. Gentrify vinyl raw denim cornhole messenger bag. McSweeney's jean shorts banjo polaroid authentic keffiyeh church-key, pork belly YOLO beard raw denim Austin Schlitz. Stumptown Intelligentsia raw denim, Pitchfork tote bag leggings American Apparel pickled VHS. Organic ethical Brooklyn, meh ethnic direct trade Carles messenger bag keytar Intelligentsia cardigan Wes Anderson. Wayfarers keffiyeh chambray aesthetic, iPhone ethnic raw denim beard master cleanse mustache. Polaroid pour-over literally, Portland Godard fixie organic gluten-free wayfarers.
         .meta
           %time 10th January 2013
+      %button.btn.btn-primary Back to legislation
+
+.row.debate
+  %header.col-md-12
+    %h1 Debate for amendment #{ @amendment_number }
 
 - @debate.each do |debate_segment|
   .row.debate
-    .col-md-4
+    %aside.col-md-4
       %h4
         = debate_segment.speaker["title"]
         = debate_segment.speaker["first_name"]
@@ -27,7 +34,7 @@
       - if debate_segment.speaker["image"]
         %img{ src: URI.join("http://www.theyworkforyou.com/", debate_segment.speaker["image"]).to_s }
 
-    .col-md-8
+    %section.col-md-8
       != debate_segment.body
       %p
         %em

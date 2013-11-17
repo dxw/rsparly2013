@@ -8,12 +8,17 @@ html {
 body {
   font-family: $fontstack;
   @include fontsize(20); 
-  margin-bottom: $spacer;
+  border-top: 10px solid $blue;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: $fontstack;  
   font-weight: bold;
+}
+
+h1 {
+  color: $blue;
+  @include fontsize(40);
 }
 
 h4 {
@@ -24,6 +29,7 @@ a {
   color: $blue;
 
   &:hover {
+    @include transition(color 0.5s ease-in);
     text-decoration: none;
   }
 }
@@ -33,7 +39,7 @@ p {
 }
 
 header.header {
-  margin: $spacer 0;
+  margin: 60px 0;
 
   h1 {
     @include fontsize(90);
@@ -62,6 +68,34 @@ header.header {
   background: $blue;
   border: none;
   padding: 10px 20px;
+
+  &:hover {
+    @include transition(background-color 0.5s ease-in);
+  }
+}
+
+.btn-info {
+  background-color: $paleblue;
+  color: $gray;
+
+  &:hover {
+    background-color: darken($paleblue, 10%);
+    color: $gray;
+  }
+}
+
+footer.footer {
+  margin: 60px 0 $spacer 0;
+  color: $gray-light;
+
+  a {
+    color: $gray-light;
+    text-decoration: underline;
+
+    &:hover {
+      color: $gray;
+    }
+  }
 }
 
 // Horrible classes used by external data sources
