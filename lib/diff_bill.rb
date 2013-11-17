@@ -3,6 +3,31 @@ require 'nokogiri'
 require 'open-uri'
 
 module DiffBill
+
+	def getDiffsFromUrl(url)
+		bills_clauses = previous_versions.map do |bill_version|
+      getClausesFromBillVersion(bill_version)
+    end
+
+    diffs =[]
+    for i in 0..(bills_clauses-2)
+
+    	diffs_for_bill_version = bills_clauses[i].select do |clause|
+    		previous_version_of_clause = bills_clauses[i+1].find{ |c| c[:title] == clause[:title] }
+    		return true if (previous_version_of_clause).nil?
+
+    		# Select the elements where the diff isn't nil:
+    		!diff(clause[:text], previous_version_of_clause[:text])
+    	end
+
+    	diffs << diffs_for_bill_version
+
+    end
+
+  end
+
+
+
 	#usage getVersionsOfBillFromUrl('http://services.parliament.uk/bills/2013-14/marriagesamesexcouplesbill/documents.html')
 	def getVersionsOfBillFromUrl(url)
 		# Add error control
@@ -36,11 +61,11 @@ module DiffBill
 		url = bill[:url]
 
 		if url.include? 'legislation.gov.uk'
-			
+
 			puts 'This is the final bill, use LegislationAPI'
 
 		else
-			
+
 			doc = Nokogiri::HTML(open(url))
 			#urlbase = url[/.*\/([\w-]+)\d+.htm/,1]
 
@@ -78,7 +103,7 @@ module DiffBill
 
 			clauses = []
 
-			doc = ReverseMarkdown.parse doc 
+			doc = ReverseMarkdown.parse doc
     		doc = doc.split(%r{^#### })
     		doc.each do |clauseunedited|
     			clause={}
@@ -88,7 +113,6 @@ module DiffBill
     			clause[:text] = clauseunedited
     			clauses << clause
     		end
-			
 
 			return clauses
 		end
