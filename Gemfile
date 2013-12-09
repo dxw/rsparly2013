@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.0.0'
 
-gem 'rails',          '4.0.0'
+gem 'rails',          '4.0.2'
 gem 'figaro',         '~> 0.7.0'
 gem 'zeus',           '~> 0.13.3'
 gem 'twfy',           '~> 1.1'
