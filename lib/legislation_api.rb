@@ -9,17 +9,11 @@ module LegislationApi
 
   def getLegislationParsedForTitle(title='Marriage (Same Sex Couples) Act 2013')
 
-      title = URI.escape(title)
+    title = URI.escape(title)
 
-      url = URI.parse('http://www.legislation.gov.uk/id?title='+title)
-    req = Net::HTTP::Get.new(url)
-    res = Net::HTTP.start(url.host, 80) {|http|
-        http.request(req)
-    }
+    url = URI.parse('http://www.legislation.gov.uk/id?title='+title)
 
-    uri = res.header["location"].gsub('/id','')
-
-    doc = Nokogiri::HTML(open('http://legislation.data.gov.uk'+uri+'/data.htm'))
+    doc = Nokogiri::HTML(open(url))
 
     doc.css('.LegExtentRestriction, .LegPrelims, .LegBlockNotYetInForceHeading, h1, h2, h3').remove
 
